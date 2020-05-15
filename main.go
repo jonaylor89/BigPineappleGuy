@@ -2,68 +2,71 @@
 package main
 
 import (
+	"os"
+	"fmt"
 	"log"
-	"io/ioutil"
+	"os/signal"
+	"syscall"
 
-	"gopkg.in/yaml.v2"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/clientcredentials"
+	"github.com/dghubble/oauth1"
+	// "golang.org/x/oauth2"
+	// "golang.org/x/oauth2/clientcredentials"
 	"github.com/dghubble/go-twitter/twitter"
 )
 
-const (
-	credsFile = "creds.yml"
-)
-
-type creds struct {
-	ConsumerKey string `yaml:"ConsumerKey"`
-	ConsumerSecret string `yaml:"ConsumerSecret"`
-}
-
-func getCreds() *creds {
-
-	c := &creds{}
-
-	// Read File
-	yamlFile, err := ioutil.ReadFile(credsFile)
-	if err != nil {
-		log.Printf("[ERROR] yamlFile.Get err   #%v ", err)
-	}
-
-	// Unmarshall Creds
-	err = yaml.Unmarshal(yamlFile, c)
-	if err != nil {
-		log.Fatalf("[ERROR] %v", err)
-	}
-
-	return c
+var users = []string{
+	"A_Chris_Kahuna",
 }
 
 func main() {
 
 	creds := getCreds()
 
-	if creds.ConsumerKey == "" ||  creds.ConsumerSecret == "" {
-		log.Fatal("Application Access Token required")
+	if creds.ConsumerKey == "" ||  creds.ConsumerSecret == "" || creds.AccessToken == "" || creds.AccessSecret == "" {
+		log.Fatal("Consumer key/secret and Access token/secret required")
 	}
 
-	// oauth2 configures a client that uses app credentials to keep a fresh token
-	config := &clientcredentials.Config{
-		ClientID:     creds.ConsumerKey,
-		ClientSecret: creds.ConsumerSecret,
-		TokenURL:     "https://api.twitter.com/oauth2/token",
-	}
-	// http.Client will automatically authorize Requests
-	httpClient := config.Client(oauth2.NoContext)
+	config := oauth1.NewConfig(creds.ConsumerKey, creds.ConsumerSecret)
+	token := oauth1.NewToken(creds.AccessToken, creds.AccessSecret)
 
-	// Twitter client
+	// OAuth1 http.Client will automatically authorize Requests
+	httpClient := config.Client(oauth1.NoContext, token)
+
+	// Twitter Client
 	client := twitter.NewClient(httpClient)
 
-	// config := oauth1.NewConfig("consumerKey", "consumerSecret")
-	// token := oauth1.NewToken("accessToken", "accessSecret")
-	// httpClient := config.Client(oauth1.NoContext, token)
+	// Convenience Demux demultiplexed stream messages
+	demux := twitter.NewSwitchDemux()
+	demux.Tweet = func(tweet *twitter.Tweet) {
+		fmt.Println(tweet.Text)
+	}
+	demux.DM = func(dm *twitter.DirectMessage) {
+		fmt.Println(dm.SenderID)
+	}
+	demux.Event = func(event *twitter.Event) {
+		fmt.Printf("%#v\n", event)
+	}
 
-	// Twitter client
-	// jclient := twitter.NewClient(httpClient)
-	
+	fmt.Println("Starting Stream...")
+
+	// FILTER
+	filterParams := &twitter.StreamFilterParams{
+		Follow:         users,
+		StallWarnings: twitter.Bool(true),
+	}
+	stream, err := client.Streams.Filter(filterParams)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Receive messages until stopped or stream quits
+	go demux.HandleChan(stream.Messages)
+
+	// Wait for SIGINT and SIGTERM (HIT CTRL-C)
+	ch := make(chan os.Signal)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+	log.Println(<-ch)
+
+	fmt.Println("Stopping Stream...")
+	stream.Stop()
 }

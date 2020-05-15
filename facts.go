@@ -1,0 +1,31 @@
+
+package main
+
+var facts = [...]string{
+	"Pineapple can reach 3.3 to 4.9 feet in height. Large specimens of this fruit can reach nearly 20 pounds of weight.", 
+	"Pineapple is perennial herbaceous plant that has short and stocky stem. Its leaves are spiny and covered with wax on the surface.",
+	"Fruit of pineapple is result of fusion of 100 to 200 individual flowers.",
+	"Color of the fruit depends on the variety. Pineapples are usually red, purple or lavender in color.",
+	"Christopher Columbus brought pineapple from South America to Europe. This fruit was first named \"pina\" because it looks like large pine cone. Englishmen later added name \"apple\" to denote it as a fruit.",
+	"Two types of pineapples, called \"cayenne pineapple\" and \"red Spanish pineapple\" are currently cultivated and consumed throughout the world. They differ in color and size of the fruit.",
+	"Birds (such as hummingbirds) and bats pollinate pineapples.",
+	"One plant produces only one pineapple per season. Ripening process ends after removal of the fruit from the stem.",
+	"Pineapple is rich source of fibers, manganese, vitamin C and vitamins of the B group. It can be consumed raw, in the form of juices, or as a part of various sweet and salty dishes. Pina colada is popular drink that is made of pineapples.",
+	"Pineapple is used to alleviate symptoms of common cold, cough and nasal congestion (by decreasing the amount of mucus). It can reduce inflammation and prevent development of blood clots.",
+	"Pineapple contains bromelain, a substance which decomposes proteins and facilitates digestion. People can use marinade made of pineapple juice to reduce toughness of the meat (bromelain acts as softener of meat).",
+	"Pineapple can be easily cultivated using the crown of the fruit. Crown should be cut and partially dried before planting in the soil.",
+	"South Asia is the biggest producer of pineapples. More than 2 million tons of pineapples are produced and exported from Philippines each year.",
+	"Almost all parts of the pineapple can be used in the production of vinegar and alcohol. Inedible parts can be used as food for domestic animals.",
+	"Pineapple can live and produce fruit for up to 50 years in the wild.",
+	"Pineapples regenerate! You can plant pineapple leaves to grow a new plant.",
+	"Hawaii produces about 1/3 of all pineapples in the world.",
+	"Pineapples are a cluster of hundreds of fruitlets.",
+	"Pineapples take about 18-20 months to become ready to harvest.",
+	"Pineapple is the only edible fruit of its kind, the Bromeliads.",
+	"One pineapple plant can produce one pineapple at a time.",
+	"Pineapples ripen faster upside down.",
+	"A pineapple is not an apple, or pine. It’s actually a berry!",
+	"The world’s largest pineapple ever recorded was in 2011, grown by Christine McCallum from Bakewell, Australia. It measured 32cm long, 66cm girth and weighed a whopping 8.28kg!",
+	"The Hawaiian word for pineapple is ‘halakahiki‘.",
+	"The Dole Plantation’s Pineapple Garden Maze in Hawaii has the record for the largest maze in the world, stretching over three acres!",
+}
