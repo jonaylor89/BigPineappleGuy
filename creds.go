@@ -14,6 +14,8 @@ const (
 type creds struct {
 	ConsumerKey string `yaml:"ConsumerKey"`
 	ConsumerSecret string `yaml:"ConsumerSecret"`
+	AccessToken string `yaml:"AccessToken"`
+	AccessSecret string `yaml:"AccessSecret"`
 }
 
 func getCreds() *creds {

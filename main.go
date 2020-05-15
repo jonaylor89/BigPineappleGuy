@@ -7,6 +7,7 @@ import (
 	"log"
 	"os/signal"
 	"syscall"
+	"math/rand"
 
 	"github.com/dghubble/oauth1"
 	// "golang.org/x/oauth2"
@@ -14,7 +15,7 @@ import (
 	"github.com/dghubble/go-twitter/twitter"
 )
 
-var users = []string{
+var victims = []string{
 	"A_Chris_Kahuna",
 }
 
@@ -38,7 +39,18 @@ func main() {
 	// Convenience Demux demultiplexed stream messages
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
+
+		choice := facts[rand.Intn(len(facts))]
 		fmt.Println(tweet.Text)
+		fmt.Println(choice)
+
+		// Send a Tweet
+		// tweet, resp, err := client.Statuses.Update(
+			// choice, 
+			// &StatusUpdateParams{ 
+				// InReplyToStatusID: tweet.ID
+			// },
+		// )
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
 		fmt.Println(dm.SenderID)
@@ -51,7 +63,7 @@ func main() {
 
 	// FILTER
 	filterParams := &twitter.StreamFilterParams{
-		Follow:         users,
+		Follow:         victims,
 		StallWarnings: twitter.Bool(true),
 	}
 	stream, err := client.Streams.Filter(filterParams)
