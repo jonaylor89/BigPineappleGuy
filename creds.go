@@ -26,6 +26,7 @@ func getCreds() *creds {
 	// Read File
 	yamlFile, err := ioutil.ReadFile(credsFile)
 	if err != nil {
+    fmt.Println("[INFO] No yml config, pulling from environment")
 		c = &creds{
 			ConsumerKey: os.Getenv("CONSUMER_KEY"),
 			ConsumerSecret: os.Getenv("CONSUMER_SECRET"),
