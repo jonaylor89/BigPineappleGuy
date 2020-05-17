@@ -1,13 +1,12 @@
-
 package main
 
 import (
-	"os"
 	"fmt"
 	"log"
+	"math/rand"
+	"os"
 	"os/signal"
 	"syscall"
-	"math/rand"
 
 	"github.com/dghubble/oauth1"
 	// "golang.org/x/oauth2"
@@ -16,14 +15,15 @@ import (
 )
 
 var victims = []string{
-	"A_Chris_Kahuna",
+	// "A_Chris_Kahuna",
+	"jonaylor89",
 }
 
 func main() {
 
 	creds := getCreds()
 
-	if creds.ConsumerKey == "" ||  creds.ConsumerSecret == "" || creds.AccessToken == "" || creds.AccessSecret == "" {
+	if creds.ConsumerKey == "" || creds.ConsumerSecret == "" || creds.AccessToken == "" || creds.AccessSecret == "" {
 		log.Fatal("Consumer key/secret and Access token/secret required")
 	}
 
@@ -46,8 +46,8 @@ func main() {
 
 		// Send a Tweet
 		// tweet, resp, err := client.Statuses.Update(
-		// 	choice, 
-		// 	&StatusUpdateParams{ 
+		// 	choice,
+		// 	&StatusUpdateParams{
 		// 		InReplyToStatusID: tweet.ID
 		// 	},
 		// )
@@ -66,7 +66,7 @@ func main() {
 
 	// FILTER
 	filterParams := &twitter.StreamFilterParams{
-		Follow:         victims,
+		Follow:        victims,
 		StallWarnings: twitter.Bool(true),
 	}
 	stream, err := client.Streams.Filter(filterParams)
