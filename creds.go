@@ -2,6 +2,7 @@
 package main
 
 import (
+	"os"
 	"log"
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
@@ -25,13 +26,18 @@ func getCreds() *creds {
 	// Read File
 	yamlFile, err := ioutil.ReadFile(credsFile)
 	if err != nil {
-		log.Printf("[ERROR] yamlFile.Get err   #%v ", err)
-	}
-
-	// Unmarshall Creds
-	err = yaml.Unmarshal(yamlFile, c)
-	if err != nil {
-		log.Fatalf("[ERROR] %v", err)
+		c = &creds{
+			ConsumerKey: os.Getenv("CONSUMER_KEY"),
+			ConsumerSecret: os.Getenv("CONSUMER_SECRET"),
+			AccessToken: os.Getenv("ACCESS_TOKEN"),
+			AccessSecret: os.Getenv("ACCESS_SECRET"),
+		}
+	} else {
+		// Unmarshall Creds
+		err = yaml.Unmarshal(yamlFile, c)
+		if err != nil {
+			log.Fatalf("[ERROR] %v", err)
+		}
 	}
 
 	return c
