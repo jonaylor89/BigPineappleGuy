@@ -41,22 +41,25 @@ func main() {
 	demux.Tweet = func(tweet *twitter.Tweet) {
 
 		choice := facts[rand.Intn(len(facts))]
-		fmt.Println(tweet.Text)
-		fmt.Println(choice)
+		fmt.Println("[INFO] Tweet: ", tweet.Text)
+		fmt.Println("[INFO] Pineapple Fact: ", choice)
 
 		// Send a Tweet
 		// tweet, resp, err := client.Statuses.Update(
-			// choice, 
-			// &StatusUpdateParams{ 
-				// InReplyToStatusID: tweet.ID
-			// },
+		// 	choice, 
+		// 	&StatusUpdateParams{ 
+		// 		InReplyToStatusID: tweet.ID
+		// 	},
 		// )
+		// if err != nil {
+		// 	fmt.Println(err)
+		// }
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
-		fmt.Println(dm.SenderID)
+		fmt.Println("[INFO] DM: ", dm.SenderID)
 	}
 	demux.Event = func(event *twitter.Event) {
-		fmt.Printf("%#v\n", event)
+		fmt.Printf("[INFO] Event: %#v\n", event)
 	}
 
 	fmt.Println("Starting Stream...")
