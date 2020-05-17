@@ -17,6 +17,7 @@ import (
 
 var victims = []string{
 	"A_Chris_Kahuna",
+	"jonaylor89",
 }
 
 func main() {
@@ -56,10 +57,20 @@ func main() {
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
 
+		// Ignore RTs
+		if tweet.Retweeted {
+			return
+		}
+
+		// Ignore Replies
+		if tweet.InReplyToStatusID != 0 || tweet.InReplyToScreenName != "" || tweet.InReplyToUserIDStr != "" {
+			return
+		}
+
 		choice := facts[rand.Intn(len(facts))]
 		fmt.Println("[INFO] Tweet: ", tweet.Text)
 
-		botResponse := fmt.Sprintf("@%s %s", tweet.User.ScreenName, choice)
+		botResponse := fmt.Sprintf("@%s Pineapple Fact: %s", tweet.User.ScreenName, choice)
 
 		// Reply to  Tweet
 		reply, _, err := client.Statuses.Update(
@@ -71,7 +82,7 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println("[INFO] Pineapple Fact: ", reply)
+		fmt.Println("[INFO] ", reply)
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
 		fmt.Println("[INFO] DM: ", dm.SenderID)
