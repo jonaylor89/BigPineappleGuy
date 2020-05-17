@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"strconv"
 
 	"github.com/dghubble/oauth1"
 	// "golang.org/x/oauth2"
@@ -15,8 +16,7 @@ import (
 )
 
 var victims = []string{
-	// "A_Chris_Kahuna",
-	"jonaylor89",
+	"A_Chris_Kahuna",
 }
 
 func main() {
@@ -36,24 +36,42 @@ func main() {
 	// Twitter Client
 	client := twitter.NewClient(httpClient)
 
+	var ids = []string{}
+
+	for _, name := range victims {
+
+		// User Show
+		user, _, err := client.Users.Show(&twitter.UserShowParams{
+    		ScreenName: name,
+		})
+		if err != nil {
+			fmt.Println("[ERROR] on ", name)
+			continue
+		}
+	
+		ids = append(ids, strconv.FormatInt(user.ID, 10))
+	}
+
 	// Convenience Demux demultiplexed stream messages
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
 
 		choice := facts[rand.Intn(len(facts))]
 		fmt.Println("[INFO] Tweet: ", tweet.Text)
-		fmt.Println("[INFO] Pineapple Fact: ", choice)
 
-		// Send a Tweet
-		// tweet, resp, err := client.Statuses.Update(
-		// 	choice,
-		// 	&StatusUpdateParams{
-		// 		InReplyToStatusID: tweet.ID
-		// 	},
-		// )
-		// if err != nil {
-		// 	fmt.Println(err)
-		// }
+		botResponse := fmt.Sprintf("@%s %s", tweet.User.ScreenName, choice)
+
+		// Reply to  Tweet
+		reply, _, err := client.Statuses.Update(
+			botResponse,
+			&twitter.StatusUpdateParams{
+				InReplyToStatusID: tweet.ID,
+			},
+		)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("[INFO] Pineapple Fact: ", reply)
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
 		fmt.Println("[INFO] DM: ", dm.SenderID)
@@ -66,7 +84,7 @@ func main() {
 
 	// FILTER
 	filterParams := &twitter.StreamFilterParams{
-		Follow:        victims,
+		Follow:        ids,
 		StallWarnings: twitter.Bool(true),
 	}
 	stream, err := client.Streams.Filter(filterParams)
