@@ -1,1 +1,1 @@
-worker: ./bin/BigPineappleGuy
+worker: BigPineappleGuy
