@@ -17,6 +17,7 @@ import (
 
 var victims = []string{
 	"A_Chris_Kahuna",
+  "georgiopizzeria",
 }
 
 func main() {
