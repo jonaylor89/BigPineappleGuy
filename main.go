@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 	"strconv"
+	"time"
 
 	"github.com/dghubble/oauth1"
 	// "golang.org/x/oauth2"
@@ -37,6 +38,8 @@ func main() {
 
 	// Twitter Client
 	client := twitter.NewClient(httpClient)
+
+	rand.Seed(time.Now().UnixNano())
 
 	var ids = []string{}
 
