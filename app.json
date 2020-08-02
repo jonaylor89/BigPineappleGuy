@@ -1,0 +1,21 @@
+{
+  "name": "Big Pineapple Guy",
+  "description": "Twitter Bot in Golang",
+  "repository": "https://github.com/jonaylor89/BigPineappleGuy",
+  "logo": "https://golang.org/lib/godoc/images/go-logo-blue.svg",
+  "keywords": ["twitter", "bot", "go", "golang"],
+  "env": {
+    "ACCESS_SECRET": {
+      "description": "Access Secret needed for using the Twitter API"
+    },
+    "ACCESS_TOKEN": {
+      "description": "Access Token needed for using the Twitter API"
+    },
+    "CONSUMER_KEY": {
+      "description": "Consumer Key needed for using the Twitter API"
+    },
+    "CONSUMER_SECRET": {
+      "description": "Consumer Secret needed for using the Twitter API"
+    }
+  }
+}
