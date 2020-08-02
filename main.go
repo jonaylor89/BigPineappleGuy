@@ -11,20 +11,13 @@ import (
 	"time"
 
 	"github.com/dghubble/oauth1"
-	// "golang.org/x/oauth2"
-	// "golang.org/x/oauth2/clientcredentials"
 	"github.com/dghubble/go-twitter/twitter"
 )
-
-var victims = []string{
-	"A_Chris_Kahuna",
-  "georgiopizzeria",
-  "HakaRoland",
-}
 
 func main() {
 
 	creds := getCreds()
+	victims := getVictims()
 
 	if creds.ConsumerKey == "" || creds.ConsumerSecret == "" || creds.AccessToken == "" || creds.AccessSecret == "" {
 		log.Fatal("Consumer key/secret and Access token/secret required")
