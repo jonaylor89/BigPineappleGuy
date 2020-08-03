@@ -16,6 +16,9 @@
     },
     "CONSUMER_SECRET": {
       "description": "Consumer Secret needed for using the Twitter API"
+    },
+    "VICTIMS": {
+      "description": "The twitter handles of those who need more pineapple facts (comma seperated)"
     }
   }
 }
